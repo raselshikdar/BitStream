@@ -1,0 +1,173 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "handle": { "type": "string" },
+        "displayName": { "type": "string" },
+        "bio": { "type": "string" },
+        "photoUrl": { "type": "string" },
+        "bannerUrl": { "type": "string" },
+        "followersCount": { "type": "integer" },
+        "followingCount": { "type": "integer" },
+        "postsCount": { "type": "integer" },
+        "isVerified": { "type": "boolean" },
+        "role": { "type": "string", "enum": ["user", "admin"] },
+        "handleUpdateCount": { "type": "integer" },
+        "lastHandleUpdate": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "handle", "createdAt"]
+    },
+    "Post": {
+      "title": "Post",
+      "description": "Microblogging post",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "authorUid": { "type": "string" },
+        "authorHandle": { "type": "string" },
+        "authorName": { "type": "string" },
+        "authorPhoto": { "type": "string" },
+        "content": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "likesCount": { "type": "integer" },
+        "repostsCount": { "type": "integer" },
+        "repliesCount": { "type": "integer" },
+        "isQuote": { "type": "boolean" },
+        "quotedPostId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "authorUid", "content", "createdAt"]
+    },
+    "Comment": {
+      "title": "Comment",
+      "description": "Post comment or reply",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "postId": { "type": "string" },
+        "parentId": { "type": "string", "description": "ID of parent comment if this is a nested reply" },
+        "authorUid": { "type": "string" },
+        "authorHandle": { "type": "string" },
+        "authorName": { "type": "string" },
+        "authorPhoto": { "type": "string" },
+        "content": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "postId", "authorUid", "content", "createdAt"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "User notification",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "recipientUid": { "type": "string" },
+        "senderUid": { "type": "string" },
+        "senderHandle": { "type": "string" },
+        "type": { "type": "string", "enum": ["like", "comment", "follow", "repost", "mention"] },
+        "postId": { "type": "string" },
+        "isRead": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "recipientUid", "senderUid", "type", "isRead", "createdAt"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "Direct message",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "chatId": { "type": "string" },
+        "senderUid": { "type": "string" },
+        "content": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "chatId", "senderUid", "content", "createdAt"]
+    },
+    "Chat": {
+      "title": "Chat",
+      "description": "Chat conversation",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "participants": { "type": "array", "items": { "type": "string" } },
+        "lastMessage": { "type": "string" },
+        "lastMessageAt": { "type": "string", "format": "date-time" },
+        "unreadCounts": { "type": "object", "description": "Map of uid to unread count" }
+      },
+      "required": ["id", "participants", "lastMessageAt"]
+    },
+    "VerificationRequest": {
+      "title": "VerificationRequest",
+      "description": "Request for profile verification",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "uid": { "type": "string" },
+        "idType": { "type": "string", "enum": ["National ID", "Driving License", "Passport"] },
+        "description": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "uid", "idType", "status", "createdAt"]
+    },
+    "SupportTicket": {
+      "title": "SupportTicket",
+      "description": "Support request for admin",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "uid": { "type": "string" },
+        "subject": { "type": "string" },
+        "message": { "type": "string" },
+        "status": { "type": "string", "enum": ["open", "closed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "uid", "subject", "message", "status", "createdAt"]
+    },
+    "Report": {
+      "title": "Report",
+      "description": "Post report for moderation",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string" },
+        "reporterUid": { "type": "string" },
+        "authorUid": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "reviewed", "dismissed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["postId", "reporterUid", "authorUid", "status", "createdAt"]
+    },
+    "CommentLike": {
+      "title": "CommentLike",
+      "description": "Like on a comment or reply",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "commentId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "commentId", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": { "schema": "User", "description": "User profiles" },
+    "/posts/{postId}": { "schema": "Post", "description": "Microblogging posts" },
+    "/comments/{commentId}": { "schema": "Comment", "description": "Post comments and replies" },
+    "/notifications/{notifId}": { "schema": "Notification", "description": "User notifications" },
+    "/chats/{chatId}": { "schema": "Chat", "description": "Direct message conversations" },
+    "/chats/{chatId}/messages/{msgId}": { "schema": "Message", "description": "Individual messages in a chat" },
+    "/verificationRequests/{reqId}": { "schema": "VerificationRequest", "description": "Verification requests" },
+    "/supportTickets/{ticketId}": { "schema": "SupportTicket", "description": "Support tickets" },
+    "/follows/{followId}": { "schema": "Follow", "description": "Follow relationships" },
+    "/likes/{likeId}": { "schema": "Like", "description": "Post likes" },
+    "/bookmarks/{bookmarkId}": { "schema": "Bookmark", "description": "User bookmarks" },
+    "/reports/{reportId}": { "schema": "Report", "description": "Post reports for moderation" },
+    "/commentLikes/{likeId}": { "schema": "CommentLike", "description": "Comment likes" }
+  }
+}

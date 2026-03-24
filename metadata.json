@@ -1,0 +1,5 @@
+{
+  "name": "syntxt",
+  "description": "A minimalist, text-only microblogging platform with a hacker-terminal aesthetic. Now with full social features, real-time messaging, and admin dashboard.",
+  "requestFramePermissions": []
+}
